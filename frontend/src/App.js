@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';
 import HistoryPage from './pages/HistoryPage';
+import AIConfigPage from './pages/AIConfigPage';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -32,13 +34,22 @@ function App() {
     <AppContainer>
       <GlobalStyle />
       <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/ai-config" element={<AIConfigPage />} />
+            <Route path="/chat/:chatId" element={<HomePage />} />
+            <Route path="/images" element={<HomePage />} />
+            <Route path="/apps" element={<HomePage />} />
+            <Route path="/research" element={<HomePage />} />
+            <Route path="/codex" element={<HomePage />} />
+            <Route path="/projects" element={<HomePage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
       </Router>
     </AppContainer>
   );

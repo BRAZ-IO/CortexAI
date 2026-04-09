@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Layout from '../components/common/Layout';
-import Navigation from '../components/common/Navigation';
 
 const HistoryContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  min-height: calc(100vh - 60px);
+  background-color: #343541;
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
 `;
 
-const HistoryContent = styled.div`
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-`;
 
 const HistoryHeader = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 2rem;
 `;
 
@@ -32,31 +24,45 @@ const HistoryTitle = styled.h1`
 `;
 
 const HistorySubtitle = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+  color: #8e8ea0;
   margin: 0.5rem 0 0 0;
   font-size: 1rem;
 `;
 
 const SearchBar = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background-color: #444654;
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #565869;
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  background: rgba(255, 255, 255, 0.2);
+  background-color: #343541;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid #565869;
   border-radius: 8px;
   padding: 0.8rem 1rem;
   font-size: 1rem;
   
   &::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: #8e8ea0;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #10a37f;
+  }
+  
+  @media (max-width: 767px) {
+    padding: 0.6rem 0.8rem;
+    font-size: 16px; /* Previne zoom no iOS */
   }
 `;
 
@@ -65,19 +71,37 @@ const FilterTabs = styled.div`
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+  
+  @media (max-width: 767px) {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const FilterTab = styled.button`
-  background: ${props => props.active ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)'};
+  background: ${props => props.active ? '#444654' : '#343541'};
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid #565869;
   border-radius: 20px;
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 14px;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background-color: #444654;
+  }
+  
+  @media (max-width: 767px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 12px;
+  }
+  
+  /* Toque melhorado para mobile */
+  @media (hover: none) {
+    &:active {
+      background-color: #444654;
+    }
   }
 `;
 
@@ -85,20 +109,36 @@ const ChatGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+  
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `;
 
 const ChatCard = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background-color: #444654;
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #565869;
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    background-color: #4a4b5c;
+  }
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
+  
+  /* Toque melhorado para mobile */
+  @media (hover: none) {
+    &:active {
+      transform: translateY(-1px);
+      background-color: #4a4b5c;
+    }
   }
 `;
 
@@ -117,12 +157,12 @@ const ChatTitle = styled.h3`
 `;
 
 const ChatDate = styled.span`
-  color: rgba(255, 255, 255, 0.7);
+  color: #8e8ea0;
   font-size: 0.8rem;
 `;
 
 const ChatPreview = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+  color: #ececf1;
   margin: 0 0 1rem 0;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -137,7 +177,7 @@ const ChatMeta = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #8e8ea0;
 `;
 
 const MessageCount = styled.span`
@@ -154,14 +194,14 @@ const ChatActions = styled.div`
 const ActionButton = styled.button`
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: #8e8ea0;
   cursor: pointer;
   padding: 0.3rem;
   border-radius: 4px;
   transition: all 0.2s;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: #343541;
     color: white;
   }
 `;
@@ -169,7 +209,11 @@ const ActionButton = styled.button`
 const EmptyState = styled.div`
   text-align: center;
   padding: 4rem 2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #8e8ea0;
+  
+  @media (max-width: 767px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const EmptyIcon = styled.div`
@@ -262,75 +306,70 @@ const HistoryPage = () => {
 
   return (
     <HistoryContainer>
-      <Navigation />
-      <Layout>
-        <HistoryContent>
-          <HistoryHeader>
-            <HistoryTitle>Chat History</HistoryTitle>
-            <HistorySubtitle>Browse and manage your conversation history</HistorySubtitle>
-          </HistoryHeader>
+      <HistoryHeader>
+        <HistoryTitle>Histórico de Conversas</HistoryTitle>
+        <HistorySubtitle>Navegue e gerencie seu histórico de conversas</HistorySubtitle>
+      </HistoryHeader>
 
-          <SearchBar>
-            <SearchInput
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </SearchBar>
+      <SearchBar>
+        <SearchInput
+          placeholder="Buscar conversas..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </SearchBar>
 
-          <FilterTabs>
-            {filters.map(filter => (
-              <FilterTab
-                key={filter.id}
-                active={activeFilter === filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-              >
-                {filter.label}
-              </FilterTab>
-            ))}
-          </FilterTabs>
+      <FilterTabs>
+        {filters.map(filter => (
+          <FilterTab
+            key={filter.id}
+            active={activeFilter === filter.id}
+            onClick={() => setActiveFilter(filter.id)}
+          >
+            {filter.label}
+          </FilterTab>
+        ))}
+      </FilterTabs>
 
-          {filteredChats.length > 0 ? (
-            <ChatGrid>
-              {filteredChats.map(chat => (
-                <ChatCard key={chat.id}>
-                  <ChatCardHeader>
-                    <ChatTitle>{chat.title}</ChatTitle>
-                    <ChatDate>{chat.date}</ChatDate>
-                  </ChatCardHeader>
-                  <ChatPreview>{chat.preview}</ChatPreview>
-                  <ChatMeta>
-                    <MessageCount>
-                      <span>Messages:</span> {chat.messageCount}
-                    </MessageCount>
-                    <ChatActions>
-                      <ActionButton onClick={() => handleExportChat(chat.id)}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                          <polyline points="7 10 12 15 17 10"></polyline>
-                          <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                      </ActionButton>
-                      <ActionButton onClick={() => handleDeleteChat(chat.id)}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="3 6 5 6 21 6"></polyline>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                      </ActionButton>
-                    </ChatActions>
-                  </ChatMeta>
-                </ChatCard>
-              ))}
-            </ChatGrid>
-          ) : (
-            <EmptyState>
-              <EmptyIcon>ð</EmptyIcon>
-              <h3>No conversations found</h3>
-              <p>Try adjusting your search or filter criteria</p>
-            </EmptyState>
-          )}
-        </HistoryContent>
-      </Layout>
+      {filteredChats.length > 0 ? (
+        <ChatGrid>
+          {filteredChats.map(chat => (
+            <ChatCard key={chat.id}>
+              <ChatCardHeader>
+                <ChatTitle>{chat.title}</ChatTitle>
+                <ChatDate>{chat.date}</ChatDate>
+              </ChatCardHeader>
+              <ChatPreview>{chat.preview}</ChatPreview>
+              <ChatMeta>
+                <MessageCount>
+                  <span>Mensagens:</span> {chat.messageCount}
+                </MessageCount>
+                <ChatActions>
+                  <ActionButton onClick={() => handleExportChat(chat.id)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </ActionButton>
+                  <ActionButton onClick={() => handleDeleteChat(chat.id)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </ActionButton>
+                </ChatActions>
+              </ChatMeta>
+            </ChatCard>
+          ))}
+        </ChatGrid>
+      ) : (
+        <EmptyState>
+          <EmptyIcon>ð</EmptyIcon>
+          <h3>Nenhuma conversa encontrada</h3>
+          <p>Tente ajustar sua busca ou filtros</p>
+        </EmptyState>
+      )}
     </HistoryContainer>
   );
 };

@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Layout from '../components/common/Layout';
-import Navigation from '../components/common/Navigation';
 
 const SettingsContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  min-height: calc(100vh - 60px);
+  background-color: #343541;
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
 `;
 
-const SettingsContent = styled.div`
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-`;
 
 const SettingsHeader = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 2rem;
 `;
 
@@ -32,18 +24,22 @@ const SettingsTitle = styled.h1`
 `;
 
 const SettingsSubtitle = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+  color: #8e8ea0;
   margin: 0.5rem 0 0 0;
   font-size: 1rem;
 `;
 
 const SettingsSection = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background-color: #444654;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #565869;
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -70,6 +66,13 @@ const SettingRow = styled.div`
   
   &:last-child {
     border-bottom: none;
+  }
+  
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
   }
 `;
 
@@ -173,6 +176,18 @@ const SaveButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  
+  @media (max-width: 767px) {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  /* Toque melhorado para mobile */
+  @media (hover: none) {
+    &:active {
+      transform: translateY(0);
+    }
+  }
 `;
 
 const SettingsPage = () => {
@@ -204,13 +219,10 @@ const SettingsPage = () => {
 
   return (
     <SettingsContainer>
-      <Navigation />
-      <Layout>
-        <SettingsContent>
-          <SettingsHeader>
-            <SettingsTitle>Settings</SettingsTitle>
-            <SettingsSubtitle>Customize your CortexAI experience</SettingsSubtitle>
-          </SettingsHeader>
+      <SettingsHeader>
+        <SettingsTitle>Configurações</SettingsTitle>
+        <SettingsSubtitle>Personalize sua experiência CortexAI</SettingsSubtitle>
+      </SettingsHeader>
 
           <SettingsSection>
             <SectionTitle>Appearance</SectionTitle>
@@ -346,11 +358,9 @@ const SettingsPage = () => {
             </SettingsGroup>
           </SettingsSection>
 
-          <SaveButton onClick={handleSave}>
-            Save Settings
-          </SaveButton>
-        </SettingsContent>
-      </Layout>
+      <SaveButton onClick={handleSave}>
+        Salvar Configurações
+      </SaveButton>
     </SettingsContainer>
   );
 };
